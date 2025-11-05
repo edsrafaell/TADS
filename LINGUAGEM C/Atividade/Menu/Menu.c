@@ -11,7 +11,7 @@ int main(){
     int anosServico = 0;
     int dependentes = 0;
 
-    double salarioFinal = 0.0;
+    double salarioBruto = 0.0;
     double impostos = 0.0;
     double aumentoTempoServico = 0.0;
     double auxilioAlimentacao = 0.0;
@@ -62,20 +62,54 @@ int main(){
                 system("cls");
                 printf("CADASTRAR / ATUALIZAR FUNCIONARIO\n");
                 printf("--------------------------------------------------------\n");
-                printf("Informe o Nome do FUNCIONARIO: ");
+                printf("Informe o NOME DO FUNCIONARIO: ");
                 scanf("%s", nome);
-                printf("Informe o Cargo:\n"); 
-                printf("[1] Operado de Computador\n [2]Analista de Sistema:")
+                printf("Informe o CARGO:\n"); 
+                printf(" [1] Operado de Computador\n [2]Analista de Siste\n [3]Engenheiro de Software: ");
                 scanf("%d", &cargoCodigo);
-                printf("Nome do Cargo: ");
-                scanf("%s", cargoNome);
-                printf("Salario Minimo: ");
+                printf("Informe o SALARIO MINIMO(R$): ");
                 scanf("%lf", &salarioMinimo);
-                printf("Anos de Servico: ");
+                printf("Informe o TEMPO DE SERVIÇO (anos): ");
                 scanf("%d", &anosServico);
-                printf("Dependentes: ");
+                printf("Informe a QUANTIDADE DE DEPENDETES: ");
                 scanf("%d", &dependentes);
+                
+                if (cargoCodigo == 1)
+                {
+                    strcpy(cargoNome, "Operador de Computador");
+                }
+                else if (cargoCodigo == 2)
+                {
+                    strcpy(cargoNome, "Analista de Sistemas");
+                }
+                else if (cargoCodigo == 3)
+                {
+                    strcpy(cargoNome, "Engenheiro de Software");
+                }
+                else
+                {
+                    printf("Cargo invalido! Tente novamente.\n");
+                }
+                
+                //Ao alterar dados base, zeramos resultados anteriores
+                salarioBruto: 0.0;
+                impostos: 0.0;
+                aumentoTempoServico: 0.0;
+                auxilioAlimentacao: 0.0;    
+                salarioLiquido: 0.0;
+
+                //Atualizar flags
                 flagCadastro = 1;
+                flagBruto = 0;
+                flagImpostos = 0;
+                flagAumento = 0;
+                flagGratificacao = 0;
+                flagAuxilio = 0;
+                flagLiquido = 0;
+                
+                printf("\n Dados cadastrados com sucesso!\n");
+                printf("Agora voce opde calcular o salario brutona opcao 2.\n");
+                printf("Presione qualquer tecla para continuar...");
                 break;
             case 2:
                 //chamar funcao calcular salario bruto
@@ -99,4 +133,5 @@ int main(){
                 //chamar funcao relatorio do funcionario
                 break;
     }
+}
 }

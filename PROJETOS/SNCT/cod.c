@@ -1,16 +1,17 @@
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
 
-/* ================== CONFIG ================== */
+/ ================== CONFIG ================== /
 #define W 120
+#define BANNER_TEXT "SEJA BEM-VINDO AO D.A.S.H. 2025"
 
-/* ================== CORES ANSI ================== */
+/ ================== CORES ANSI ================== /
 #define COR_VERDE "\033[1;92m"
-#define COR_RESET "\033[0m"  
+#define COR_RESET "\033[0m"
 
-/* ================== CP437 (BOX DRAWING) LINHAS FINAS ================== */
+/ ================== CP437 (BOX DRAWING) LINHAS FINAS ================== /
 #define TL 218 // ┌
 #define TR 191 // ┐
 #define BL 192 // └
@@ -21,7 +22,7 @@
 #define R 180  // ┤
 #define FILL ' '
 
-/* ============ VISUAL CONFIG ============ */
+/ ============ VISUAL CONFIG ============ /
 static void cls(void){ system("cls"); }
 static void theme(void){ system("color 0B"); } // fundo preto, texto azul claro
 static void cp437(void){
@@ -31,7 +32,7 @@ static void cp437(void){
 }
 static void mode_120x28(void){ system("mode con cols=120 lines=28"); }
 
-/* ================== MOLDURA ================== */
+/ ================== MOLDURA ================== /
 void linhaTopo(){ putchar(TL); for(int i=0;i<W-2;i++) putchar(H); putchar(TR); putchar('\n'); }
 void linhaRodape(){ putchar(BL); for(int i=0;i<W-2;i++) putchar(H); putchar(BR); putchar('\n'); }
 void linhaDiv(){ putchar(L); for(int i=0;i<W-2;i++) putchar(H); putchar(R); putchar('\n'); }
@@ -47,7 +48,7 @@ void linhaCentro(const char* texto){
     putchar(V); putchar('\n');
 }
 
-/* PROMPT CENTRALIZADO */
+/ PROMPT CENTRALIZADO /
 void linhaPromptCentro(const char* texto, SHORT* px, SHORT* py){
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO s; GetConsoleScreenBufferInfo(h,&s);
@@ -75,22 +76,21 @@ void aguardaEnterDentro(SHORT px, SHORT py){
     do { ch=getchar(); } while(ch!='\n' && ch!=EOF);
 }
 
-/* CABECALHO E RODAPE PADRAO */
+/ CABECALHO E RODAPE PADRAO /
 void janelaTitulo(const char* titulo){ linhaTopo(); linhaVazia(); linhaCentro(titulo); linhaVazia(); linhaDiv(); }
 void janelaRodapePadrao(const char* rodape){ linhaDiv(); linhaCentro(rodape); linhaRodape(); }
 
-/* ================== BARRA DE CARREGAMENTO COM PORCENTAGEM ================== */
+/ ================== BARRA DE CARREGAMENTO COM PORCENTAGEM ================== /
 void barra_carregamento_visual() {
     const char *ascii_art[] = {
-        " /$$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$",
-        "| $$__  $$ /$$__  $$ /$$__  $$| $$  | $$",
-        "| $$  \\ $$| $$  \\ $$| $$  \\__/| $$  | $$",
-        "| $$  | $$| $$$$$$$$|  $$$$$$ | $$$$$$$$",
-        "| $$  | $$| $$__  $$ \\____  $$| $$__  $$",
-        "| $$  | $$| $$  | $$ /$$  \\ $$| $$  | $$",
-        "| $$$$$$$/| $$  | $$|  $$$$$$/| $$  | $$",
-        "|_______/ |__/  |__/ \\______/ |__/  |__/ "
-    };
+        " /$$$$$$   /$$$$$$  /$$$$$$$  /$$$$$$$  /$$$$$$$$  /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$$$$$ ",
+        "/$$  $$ /$$  $$| $$  $$| $$  $$| $$/ /$$  $$ /$$  $$| $$$    /$$$| $$/| $$$ | $$|  $$//$$  $$",
+        "| $$  \\/| $$  \\ $$| $$  \\ $$| $$  \\ $$| $$      | $$  \\/| $$  \\ $$| $$$$  /$$$$| $$      | $$$$| $$   | $$  | $$  \\ $$",
+        "| $$      | $$$$$$$$| $$$$$$$/| $$$$$$$/| $$$$$   | $$ /$$$$| $$$$$$$$| $$ $$/$$ $$| $$$$$   | $$ $$ $$   | $$  | $$  | $$",
+        "| $$      | $$  $$| $$  $$| $$  $$| $$/   | $$|  $$| $$  $$| $$  $$$| $$| $$/   | $$  $$$$   | $$  | $$  | $$",
+        "| $$    $$| $$  | $$| $$  \\ $$| $$  \\ $$| $$      | $$  \\ $$| $$  | $$| $$\\  $ | $$| $$      | $$\\  $$$   | $$  | $$  | $$",
+        "|  $$$$$$/| $$  | $$| $$  | $$| $$  | $$| $$$$$$$$|  $$$$$$/| $$  | $$| $$ \\/  | $$| $$$$$$$$| $$ \\  $$   | $$  |  $$$$$$/",
+        " \\/ |/  |/|/  |/|/  |/|/ \\/ |/  |/|/     |/|/|/  \\/   |/   \\/"}; 
 
     int largura = 60;
     for (int p = 0; p <= largura; p++) {
@@ -112,23 +112,12 @@ void barra_carregamento_visual() {
     cls();
 }
 
-/* ================== TELAS ================== */
+/ ================== TELAS ================== /
 void telaPrincipal(){
     theme(); cls();
-    linhaTopo(); 
-    linhaVazia();
-
-    // ===== ARTE ASCII NO MENU =====
-    linhaCentro(" /$$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$");
-    linhaCentro("| $$__  $$ /$$__  $$ /$$__  $$| $$  | $$");
-    linhaCentro("| $$  \\ $$| $$  \\ $$| $$  \\__/| $$  | $$");
-    linhaCentro("| $$  | $$| $$$$$$$$|  $$$$$$ | $$$$$$$$");
-    linhaCentro("| $$  | $$| $$__  $$ \\____  $$| $$__  $$");
-    linhaCentro("| $$  | $$| $$  | $$ /$$  \\ $$| $$  | $$");
-    linhaCentro("| $$$$$$$/| $$  | $$|  $$$$$$/| $$  | $$");
-    linhaCentro("|_______/ |__/  |__/ \\______/ |__/  |__/ ");
-    linhaVazia();
-    linhaDiv();
+    linhaTopo(); linhaVazia();
+    linhaCentro(BANNER_TEXT);
+    linhaVazia(); linhaDiv();
 
     linhaVazia();
     linhaCentro("D.A.S.H. - Disciplina, Atencao, Saude e Habitos Digitais");
@@ -149,8 +138,7 @@ void telaPrincipal(){
     linhaRodape();
 
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD c = { px, py }; 
-    SetConsoleCursorPosition(h, c);
+    COORD c = { px, py }; SetConsoleCursorPosition(h, c);
 }
 
 void telaSobre(){
@@ -170,7 +158,7 @@ void telaSobre(){
     aguardaEnterDentro(px, py);
 }
 
-/* ================== TESTE ================== */
+/ ================== TESTE ================== /
 const char *perguntas[] = {
     "Voce se distrai facilmente com notificacoes e redes sociais?",
     "Costuma procrastinar tarefas importantes por estar online?",
@@ -230,7 +218,7 @@ void aplicarTesteAtencao(){
     aguardaEnterDentro(px, py);
 }
 
-/* ================== FINALIZACAO ================== */
+/ ================== FINALIZACAO ================== /
 void finalizarAuto(){
     theme(); cls(); mode_120x28();
     janelaTitulo("ENCERRANDO D.A.S.H.");
@@ -239,7 +227,7 @@ void finalizarAuto(){
     barra_carregamento_visual(); // animação de encerramento
 }
 
-/* ================== MAIN ================== */
+/ ================== MAIN ================== /
 int main(){
     cp437(); theme(); mode_120x28();
     barra_carregamento_visual(); // tela de carregamento inicial

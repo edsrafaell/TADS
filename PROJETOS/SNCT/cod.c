@@ -1,17 +1,16 @@
-#include <stdio.h>
+#include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
 
-/ ================== CONFIG ================== /
+/* ================== CONFIG ================== */
 #define W 120
-#define BANNER_TEXT "SEJA BEM-VINDO AO D.A.S.H. 2025"
 
-/ ================== CORES ANSI ================== /
+/* ================== CORES ANSI ================== */
 #define COR_VERDE "\033[1;92m"
-#define COR_RESET "\033[0m"
+#define COR_RESET "\033[0m"  
 
-/ ================== CP437 (BOX DRAWING) LINHAS FINAS ================== /
+/* ================== CP437 (BOX DRAWING) LINHAS FINAS ================== */
 #define TL 218 // ┌
 #define TR 191 // ┐
 #define BL 192 // └
@@ -22,9 +21,9 @@
 #define R 180  // ┤
 #define FILL ' '
 
-/ ============ VISUAL CONFIG ============ /
+/* ============ VISUAL CONFIG ============ */
 static void cls(void){ system("cls"); }
-static void theme(void){ system("color 0B"); } // fundo preto, texto azul claro
+static void theme(void){ system("color 0B"); }
 static void cp437(void){
     SetConsoleOutputCP(437);
     SetConsoleCP(437);
@@ -32,11 +31,12 @@ static void cp437(void){
 }
 static void mode_120x28(void){ system("mode con cols=120 lines=28"); }
 
-/ ================== MOLDURA ================== /
+/* ================== MOLDURA ================== */
 void linhaTopo(){ putchar(TL); for(int i=0;i<W-2;i++) putchar(H); putchar(TR); putchar('\n'); }
 void linhaRodape(){ putchar(BL); for(int i=0;i<W-2;i++) putchar(H); putchar(BR); putchar('\n'); }
 void linhaDiv(){ putchar(L); for(int i=0;i<W-2;i++) putchar(H); putchar(R); putchar('\n'); }
 void linhaVazia(){ putchar(V); for(int i=0;i<W-2;i++) putchar(FILL); putchar(V); putchar('\n'); }
+
 void linhaCentro(const char* texto){
     int len=(int)strlen(texto);
     int esp=(W-2-len); if(esp<0) esp=0;
@@ -48,7 +48,6 @@ void linhaCentro(const char* texto){
     putchar(V); putchar('\n');
 }
 
-/ PROMPT CENTRALIZADO /
 void linhaPromptCentro(const char* texto, SHORT* px, SHORT* py){
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO s; GetConsoleScreenBufferInfo(h,&s);
@@ -76,21 +75,22 @@ void aguardaEnterDentro(SHORT px, SHORT py){
     do { ch=getchar(); } while(ch!='\n' && ch!=EOF);
 }
 
-/ CABECALHO E RODAPE PADRAO /
+/* CABEÇALHO E RODAPÉ */
 void janelaTitulo(const char* titulo){ linhaTopo(); linhaVazia(); linhaCentro(titulo); linhaVazia(); linhaDiv(); }
 void janelaRodapePadrao(const char* rodape){ linhaDiv(); linhaCentro(rodape); linhaRodape(); }
 
-/ ================== BARRA DE CARREGAMENTO COM PORCENTAGEM ================== /
+/* ================== BARRA DE CARREGAMENTO ================== */
 void barra_carregamento_visual() {
     const char *ascii_art[] = {
-        " /$$$$$$   /$$$$$$  /$$$$$$$  /$$$$$$$  /$$$$$$$$  /$$$$$$   /$$$$$$  /$$      /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$$$$$ ",
-        "/$$  $$ /$$  $$| $$  $$| $$  $$| $$/ /$$  $$ /$$  $$| $$$    /$$$| $$/| $$$ | $$|  $$//$$  $$",
-        "| $$  \\/| $$  \\ $$| $$  \\ $$| $$  \\ $$| $$      | $$  \\/| $$  \\ $$| $$$$  /$$$$| $$      | $$$$| $$   | $$  | $$  \\ $$",
-        "| $$      | $$$$$$$$| $$$$$$$/| $$$$$$$/| $$$$$   | $$ /$$$$| $$$$$$$$| $$ $$/$$ $$| $$$$$   | $$ $$ $$   | $$  | $$  | $$",
-        "| $$      | $$  $$| $$  $$| $$  $$| $$/   | $$|  $$| $$  $$| $$  $$$| $$| $$/   | $$  $$$$   | $$  | $$  | $$",
-        "| $$    $$| $$  | $$| $$  \\ $$| $$  \\ $$| $$      | $$  \\ $$| $$  | $$| $$\\  $ | $$| $$      | $$\\  $$$   | $$  | $$  | $$",
-        "|  $$$$$$/| $$  | $$| $$  | $$| $$  | $$| $$$$$$$$|  $$$$$$/| $$  | $$| $$ \\/  | $$| $$$$$$$$| $$ \\  $$   | $$  |  $$$$$$/",
-        " \\/ |/  |/|/  |/|/  |/|/ \\/ |/  |/|/     |/|/|/  \\/   |/   \\/"}; 
+        " /$$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$",
+        "| $$__  $$ /$$__  $$ /$$__  $$| $$  | $$",
+        "| $$  \\ $$| $$  \\ $$| $$  \\__/| $$  | $$",
+        "| $$  | $$| $$$$$$$$|  $$$$$$ | $$$$$$$$",
+        "| $$  | $$| $$__  $$ \\____  $$| $$__  $$",
+        "| $$  | $$| $$  | $$ /$$  \\ $$| $$  | $$",
+        "| $$$$$$$/| $$  | $$|  $$$$$$/| $$  | $$",
+        "|_______/ |__/  |__/ \\______/ |__/  |__/ "
+    };
 
     int largura = 60;
     for (int p = 0; p <= largura; p++) {
@@ -101,10 +101,10 @@ void barra_carregamento_visual() {
 
         printf("                          [");
         for (int i = 0; i < largura; i++) {
-            if (i < p) printf("%c", 219); // bloco cheio
+            if (i < p) printf("%c", 219);
             else printf(" ");
         }
-        printf("]  %3d%%", (p * 100) / largura); // porcentagem à direita
+        printf("]  %3d%%", (p * 100) / largura);
         fflush(stdout);
         Sleep(20);
     }
@@ -112,12 +112,22 @@ void barra_carregamento_visual() {
     cls();
 }
 
-/ ================== TELAS ================== /
+/* ================== TELAS ================== */
 void telaPrincipal(){
     theme(); cls();
-    linhaTopo(); linhaVazia();
-    linhaCentro(BANNER_TEXT);
-    linhaVazia(); linhaDiv();
+    linhaTopo(); 
+    linhaVazia();
+
+    linhaCentro(" /$$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$");
+    linhaCentro("| $$__  $$ /$$__  $$ /$$__  $$| $$  | $$");
+    linhaCentro("| $$  \\ $$| $$  \\ $$| $$  \\__/| $$  | $$");
+    linhaCentro("| $$  | $$| $$$$$$$$|  $$$$$$ | $$$$$$$$");
+    linhaCentro("| $$  | $$| $$__  $$ \\____  $$| $$__  $$");
+    linhaCentro("| $$  | $$| $$  | $$ /$$  \\ $$| $$  | $$");
+    linhaCentro("| $$$$$$$/| $$  | $$|  $$$$$$/| $$  | $$");
+    linhaCentro("|_______/ |__/  |__/ \\______/ |__/  |__/ ");
+    linhaVazia();
+    linhaDiv();
 
     linhaVazia();
     linhaCentro("D.A.S.H. - Disciplina, Atencao, Saude e Habitos Digitais");
@@ -138,7 +148,8 @@ void telaPrincipal(){
     linhaRodape();
 
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD c = { px, py }; SetConsoleCursorPosition(h, c);
+    COORD c = { px, py }; 
+    SetConsoleCursorPosition(h, c);
 }
 
 void telaSobre(){
@@ -146,7 +157,7 @@ void telaSobre(){
     janelaTitulo("SOBRE O D.A.S.H.");
     linhaVazia();
     linhaCentro("O sistema D.A.S.H. avalia habitos digitais e niveis de atencao.");
-    linhaCentro("Projeto educativo — nao substitui diagnostico medico.");
+    linhaCentro("Projeto educativo nao substitui diagnostico medico.");
     linhaCentro("Objetivo: promover consciencia e equilibrio no uso da tecnologia.");
     linhaCentro("Desenvolvido por alunos de TADS - IFPI | 2025");
     linhaVazia();
@@ -158,20 +169,21 @@ void telaSobre(){
     aguardaEnterDentro(px, py);
 }
 
-/ ================== TESTE ================== /
+/* ================== PERGUNTAS ================== */
 const char *perguntas[] = {
-    "Voce se distrai facilmente com notificacoes e redes sociais?",
-    "Costuma procrastinar tarefas importantes por estar online?",
-    "Sente dificuldade em manter foco por mais de 30 minutos?",
-    "Verifica o celular repetidamente sem perceber?",
-    "Passa muito tempo em redes sociais sem um proposito claro?",
-    "Tem dificuldade em concluir tarefas sem interrupcoes digitais?",
-    "Sente ansiedade quando fica longe do celular por um tempo?",
-    "Usa o celular mesmo durante refeicoes ou conversas presenciais?",
-    "Consegue dormir bem ou o uso do celular atrapalha seu sono?",
-    "Ja tentou reduzir o tempo de tela e nao conseguiu manter?"
+    "VOCE SE DISTRAI FACILMENTE COM NOTIFICACOES E REDES SOCIAIS?",
+    "COSTUMA PROCRASTINAR TAREFAS IMPORTANTES POR ESTAR ONLINE?",
+    "SENTE DIFICULDADE EM MANTER FOCO POR MAIS DE 30 MINUTOS?",
+    "VERIFICA O CELULAR REPE TIDAMENTE SEM PERCEBER?",
+    "PASSA MUITO TEMPO EM REDES SOCIAIS SEM UM PROPOSITO CLARO?",
+    "TEM DIFICULDADE EM CONCLUIR TAREFAS SEM INTERRUPCOES DIGITAIS?",
+    "SENTE ANSIEDADE QUANDO FICA LONGE DO CELULAR POR UM TEMPO?",
+    "USA O CELULAR MESMO DURANTE REFEICOES OU CONVERSAS PRESENCIAIS?",
+    "CONSEGUE DORMIR BEM OU O USO DO CELULAR ATRAPALHA SEU SONO?",
+    "JA TENTOU REDUZIR O TEMPO DE TELA E NAO CONSEGUIU MANTER?"
 };
 
+/* ================== TESTE ================== */
 void aplicarTesteAtencao(){
     int respostas[10];
     int total = 0;
@@ -200,14 +212,30 @@ void aplicarTesteAtencao(){
     janelaTitulo("RESULTADO");
     linhaVazia();
 
-    if(total <= 15)
-        linhaCentro("Excelente controle de atencao digital! Continue assim!");
-    else if(total <= 25)
-        linhaCentro("Atencao razoavel: mantenha foco e controle o uso das redes.");
-    else if(total <= 35)
-        linhaCentro("Nivel de dispersao alto: reduza estimulos digitais.");
-    else
-        linhaCentro("Sinais de dependencia digital: busque equilibrio e pausas regulares.");
+    /* ================== DIAGNOSTICO MELHORADO ================== */
+    if(total <= 15){
+        linhaCentro("NIVEL: EXCELENTE");
+        linhaCentro("Parabens! Sem sinais de deficit de atencao digital.");
+    }
+    else if(total <= 24){
+        linhaCentro("NIVEL: LEVE");
+        linhaCentro("Alguns sinais de distracao, mas ainda sob controle.");
+    }
+    else if(total <= 32){
+        linhaCentro("NIVEL: MODERADO");
+        linhaCentro("Dificuldade perceptivel em manter foco.");
+        linhaCentro("Reduza estimulos digitais e organize rotinas.");
+    }
+    else if(total <= 36){
+        linhaCentro("NIVEL: ALTO");
+        linhaCentro("Sinais fortes de dispersao e dependencia digital.");
+        linhaCentro("Recomendado praticar pausas e limitar notificacoes.");
+    }
+    else{
+        linhaCentro("NIVEL: GRAVE");
+        linhaCentro("Possivel deficit de atencao digital.");
+        linhaCentro("Considere buscar orientacao profissional.");
+    }
 
     linhaVazia();
     linhaDiv();
@@ -218,19 +246,19 @@ void aplicarTesteAtencao(){
     aguardaEnterDentro(px, py);
 }
 
-/ ================== FINALIZACAO ================== /
+/* ================== FINALIZACAO ================== */
 void finalizarAuto(){
     theme(); cls(); mode_120x28();
     janelaTitulo("ENCERRANDO D.A.S.H.");
     linhaVazia(); linhaCentro("Obrigado por utilizar o sistema."); linhaVazia();
     linhaRodape();
-    barra_carregamento_visual(); // animação de encerramento
+    barra_carregamento_visual();
 }
 
-/ ================== MAIN ================== /
+/* ================== MAIN ================== */
 int main(){
     cp437(); theme(); mode_120x28();
-    barra_carregamento_visual(); // tela de carregamento inicial
+    barra_carregamento_visual();
 
     int op=0;
     do{
